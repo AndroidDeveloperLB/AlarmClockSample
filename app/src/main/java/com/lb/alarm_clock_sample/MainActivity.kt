@@ -4,8 +4,11 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -42,5 +45,24 @@ class MainActivity : AppCompatActivity() {
         }
         Log.d("AppLog", message)
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val url = when (item.itemId) {
+            R.id.menuItem_all_my_apps -> "https://play.google.com/store/apps/developer?id=AndroidDeveloperLB"
+            R.id.menuItem_all_my_repositories -> "https://github.com/AndroidDeveloperLB"
+            R.id.menuItem_current_repository_website -> "https://github.com/AndroidDeveloperLB/AlarmClockSample"
+            else -> return true
+        }
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+        startActivity(intent)
+        return true
     }
 }
